@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@/components/ErrorMessage'
 import { colors } from '@/shared/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import clsx from 'clsx'
@@ -42,8 +43,6 @@ export const AppInput = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        console.log(error)
-
         return (
           <View className="w-full mt-4">
             {label && (
@@ -89,6 +88,8 @@ export const AppInput = <T extends FieldValues>({
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
+
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
           </View>
         )
       }}
