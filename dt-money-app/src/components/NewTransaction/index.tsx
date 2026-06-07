@@ -1,4 +1,5 @@
 import { AppButton } from '@/components/AppButton'
+import { ErrorMessage } from '@/components/ErrorMessage'
 import { SelectCategoryModal } from '@/components/SelectCategoryModal'
 import { TransactionTypeSelector } from '@/components/TransactionTypeSelector'
 import { useBottomSheetContext } from '@/context/bottom-sheet.context'
@@ -76,6 +77,10 @@ export const NewTransaction = () => {
           onChangeText={(text) => setTransactionData('description', text)}
         />
 
+        {validationErrors.description && (
+          <ErrorMessage>{validationErrors.description}</ErrorMessage>
+        )}
+
         <CurrencyInput
           className="text-white text-lg h-[50px] bg-background-primary my-2 rounded-md pl-4"
           value={transaction.value}
@@ -87,15 +92,27 @@ export const NewTransaction = () => {
           onChangeValue={(value) => setTransactionData('value', value ?? 0)}
         />
 
+        {validationErrors.value && (
+          <ErrorMessage>{validationErrors.value}</ErrorMessage>
+        )}
+
         <SelectCategoryModal
           selectedCategory={transaction.categoryId}
           onSelect={(categoryId) => setTransactionData('categoryId', categoryId)}
         />
 
+        {validationErrors.categoryId && (
+          <ErrorMessage>{validationErrors.categoryId}</ErrorMessage>
+        )}
+
         <TransactionTypeSelector
           typeId={transaction.typeId}
           setTransactionType={(typeId) => setTransactionData('typeId', typeId)}
         />
+
+        {validationErrors.typeId && (
+          <ErrorMessage>{validationErrors.typeId}</ErrorMessage>
+        )}
 
         <View>
           <AppButton onPress={handleCreateTransaction}>Registrar</AppButton>

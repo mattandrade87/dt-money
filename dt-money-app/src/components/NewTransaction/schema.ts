@@ -5,13 +5,13 @@ export const transactionSchema = yup.object().shape({
 
   value: yup
     .number()
-    .min(0.01, 'O valor deve ser no mínimo 0.01')
+    .min(0.01, 'O valor deve ser no mínimo 0,01')
     .required('O valor é obrigatório'),
 
   typeId: yup
     .number()
     .min(1, 'Selecione um tipo de transação')
-    .required('Tipo de transação é obrigatória'),
+    .required('Tipo de transação é obrigatório'),
 
   categoryId: yup
     .number()
