@@ -1,3 +1,4 @@
+import { SelectCategoryModal } from '@/components/SelectCategoryModal'
 import { TransactionTypeSelector } from '@/components/TransactionTypeSelector'
 import { useBottomSheetContext } from '@/context/bottom-sheet.context'
 import { colors } from '@/shared/colors'
@@ -55,6 +56,11 @@ export const NewTransaction = () => {
           precision={2}
           minValue={0}
           onChangeValue={(value) => setTransactionData('value', value ?? 0)}
+        />
+
+        <SelectCategoryModal
+          selectedCategory={transaction.categoryId}
+          onSelect={(categoryId) => setTransactionData('categoryId', categoryId)}
         />
 
         <TransactionTypeSelector
