@@ -2,6 +2,7 @@ import { colors } from '@/shared/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import { FC } from 'react'
 import {
+  ActivityIndicator,
   Modal,
   Text,
   TouchableOpacity,
@@ -12,9 +13,16 @@ import {
 interface DeleteModalProps {
   visible: boolean
   hideModal: () => void
+  handleDeleteTransaction: () => void
+  loading: boolean
 }
 
-export const DeleteModal: FC<DeleteModalProps> = ({ visible, hideModal }) => {
+export const DeleteModal: FC<DeleteModalProps> = ({
+  visible,
+  hideModal,
+  handleDeleteTransaction,
+  loading,
+}) => {
   return (
     <View className="flex-1 absolute">
       <Modal
@@ -47,6 +55,33 @@ export const DeleteModal: FC<DeleteModalProps> = ({ visible, hideModal }) => {
                       color={colors.gray[800]}
                       size={25}
                     />
+                  </TouchableOpacity>
+                </View>
+
+                <View className="p-3 flex-1 border-b border-gray-300 items-center justify-center">
+                  <Text className="text-gray-500 text-lg leading-8">
+                    Tem certeza que deseja apagar essa transação? Esta ação não
+                    pode ser desfeita.
+                  </Text>
+                </View>
+
+                <View className="flex-row justify-end gap-4 w-full p-6 pb-0 pr-0">
+                  <TouchableOpacity
+                    className="w-[100px] bg-none border-2 border-accent-brand items-center justify-center p-3 rounded-6"
+                    onPress={hideModal}
+                  >
+                    <Text className="text-accent-brand">Cancelar</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    className="w-[100px] bg-accent-red-background-primary items-center justify-center p-3 rounded-6"
+                    onPress={handleDeleteTransaction}
+                  >
+                    {loading ? (
+                      <ActivityIndicator color={colors.white} />
+                    ) : (
+                      <Text className="text-white">Apagar</Text>
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>

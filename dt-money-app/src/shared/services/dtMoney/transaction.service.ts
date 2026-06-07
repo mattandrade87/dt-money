@@ -37,3 +37,9 @@ export const createTransaction = async (
 ): Promise<void> => {
   await dtMoneyApi.post('/transaction', transaction)
 }
+
+export const deleteTransaction = async (
+  transactionId: number
+): Promise<void> => {
+  await dtMoneyApi.delete(`/transaction/${transactionId}`)
+}

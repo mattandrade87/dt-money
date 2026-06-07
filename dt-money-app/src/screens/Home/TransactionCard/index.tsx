@@ -26,7 +26,9 @@ export const TransactionCard: FC<TransactionCardParams> = ({ transaction }) => {
         width: '90%',
         marginBottom: 16,
       }}
-      renderRightActions={() => <RightAction />}
+      renderRightActions={() => (
+        <RightAction transactionId={transaction.id} />
+      )}
       friction={0.8}
       overshootRight={false}
     >

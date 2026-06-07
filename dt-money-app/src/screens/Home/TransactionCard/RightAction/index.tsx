@@ -1,12 +1,23 @@
+import { useSnackbarContext } from '@/context/snackbar.context'
 import { colors } from '@/shared/colors'
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
+import * as TransactionService from '@/shared/services/dtMoney/transaction.service'
 import { MaterialIcons } from '@expo/vector-icons'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import { DeleteModal } from './DeleteModal'
 
-export const RightAction = () => {
+interface RightActionProps {
+  transactionId: number
+}
+
+export const RightAction: FC<RightActionProps> = ({ transactionId }) => {
+  const { errorHandler } = useErrorHandler()
+  const { notify } = useSnackbarContext()
+
   const [modalVisible, setModalVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const showModal = () => {
     setModalVisible(true)
@@ -14,6 +25,25 @@ export const RightAction = () => {
 
   const hideModal = () => {
     setModalVisible(false)
+  }
+
+  const handleDeleteTransaction = async () => {
+    try {
+      setLoading(true)
+
+      await TransactionService.deleteTransaction(transactionId)
+
+      notify({
+        message: 'Transação deletada com sucesso',
+        messageType: 'success',
+      })
+
+      hideModal()
+    } catch (error) {
+      errorHandler(error, 'Falha ao deletar a transação')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -25,7 +55,12 @@ export const RightAction = () => {
         <MaterialIcons name="delete-outline" color={colors.white} size={30} />
       </TouchableOpacity>
 
-      <DeleteModal visible={modalVisible} hideModal={hideModal} />
+      <DeleteModal
+        visible={modalVisible}
+        hideModal={hideModal}
+        handleDeleteTransaction={handleDeleteTransaction}
+        loading={loading}
+      />
     </>
   )
 }
