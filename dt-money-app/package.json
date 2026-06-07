@@ -6,6 +6,7 @@
     "@expo/vector-icons": "^15.0.2",
     "@react-navigation/native": "^7.2.5",
     "@react-navigation/stack": "^7.9.3",
+    "clsx": "^2.1.1",
     "expo": "~56.0.9",
     "expo-status-bar": "~56.0.4",
     "nativewind": "^4.2.5",
