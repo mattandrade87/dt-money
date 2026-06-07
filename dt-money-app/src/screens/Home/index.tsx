@@ -24,7 +24,12 @@ export const Home = () => {
 
   const fetchInitialData = async () => {
     try {
-      await Promise.all([handleFetchCategories(), fetchTransactions()])
+      await Promise.all([
+        handleFetchCategories(),
+        fetchTransactions({
+          page: 1,
+        }),
+      ])
     } catch (error) {
       errorHandler(error, 'Falha ao buscar dados iniciais')
     }
