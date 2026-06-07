@@ -92,7 +92,7 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     [pagination],
   )
 
-  const refreshTransactions = async () => {
+  const refreshTransactions = useCallback(async () => {
     const { page, perPage } = pagination
 
     setLoading(true)
@@ -113,7 +113,7 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     })
 
     setLoading(false)
-  }
+  }, [pagination])
 
   const loadMoreTransactions = useCallback(async () => {
     if (loading || pagination.page >= pagination.totalPages) {

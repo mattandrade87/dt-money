@@ -23,13 +23,37 @@ export const Home = () => {
     await fetchCategories()
   }
 
+  const handleFetchInitialTransactions = async () => {
+    try {
+      await fetchTransactions({
+        page: 1,
+      })
+    } catch (error) {
+      errorHandler(error, 'Falha ao buscar transações')
+    }
+  }
+
+  const handleLoadMoreTransactions = async () => {
+    try {
+      await loadMoreTransactions()
+    } catch (error) {
+      errorHandler(error, 'Falha ao carregar novas transações')
+    }
+  }
+
+  const handleRefreshTransactions = async () => {
+    try {
+      await refreshTransactions()
+    } catch (error) {
+      errorHandler(error, 'Falha ao recarregar as transações')
+    }
+  }
+
   const fetchInitialData = async () => {
     try {
       await Promise.all([
         handleFetchCategories(),
-        fetchTransactions({
-          page: 1,
-        }),
+        handleFetchInitialTransactions(),
       ])
     } catch (error) {
       errorHandler(error, 'Falha ao buscar dados iniciais')
@@ -49,9 +73,12 @@ export const Home = () => {
         keyExtractor={(item) => `transaction-${item.id}`}
         ListHeaderComponent={ListHeader}
         refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={refreshTransactions} />
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={handleRefreshTransactions}
+          />
         }
-        onEndReached={loadMoreTransactions}
+        onEndReached={handleLoadMoreTransactions}
         onEndReachedThreshold={0.5}
       />
     </SafeAreaView>
