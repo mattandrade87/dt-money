@@ -1,3 +1,4 @@
+import { CreateTransactionRequest } from '@/shared/interfaces/http/createTransactionRequest'
 import { TransactionCategory } from '@/shared/interfaces/http/transaction-category-response'
 import * as TransactionService from '@/shared/services/dtMoney/transaction.service'
 import {
@@ -10,6 +11,7 @@ import {
 
 type TransactionContextType = {
   fetchCategories: () => Promise<void>
+  createTransaction: (transaction: CreateTransactionRequest) => Promise<void>
   categories: TransactionCategory[]
 }
 
@@ -27,11 +29,16 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     setCategories(categoriesResponse)
   }
 
+  const createTransaction = async (transaction: CreateTransactionRequest) => {
+    await TransactionService.createTransaction(transaction)
+  }
+
   return (
     <TransactionContext.Provider
       value={{
         categories,
         fetchCategories,
+        createTransaction,
       }}
     >
       {children}

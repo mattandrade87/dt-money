@@ -3,11 +3,19 @@ import { ErrorMessage } from '@/components/ErrorMessage'
 import { SelectCategoryModal } from '@/components/SelectCategoryModal'
 import { TransactionTypeSelector } from '@/components/TransactionTypeSelector'
 import { useBottomSheetContext } from '@/context/bottom-sheet.context'
+import { useTransactionContext } from '@/context/transaction.context'
 import { colors } from '@/shared/colors'
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
 import { CreateTransactionRequest } from '@/shared/interfaces/http/createTransactionRequest'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import CurrencyInput from 'react-native-currency-input'
 import * as yup from 'yup'
 
@@ -17,6 +25,8 @@ type ValidationErrorsTypes = Record<keyof CreateTransactionRequest, string>
 
 export const NewTransaction = () => {
   const { closeBottomSheet } = useBottomSheetContext()
+  const { createTransaction } = useTransactionContext()
+  const { errorHandler } = useErrorHandler()
 
   const [transaction, setTransaction] = useState<CreateTransactionRequest>({
     description: '',
@@ -27,6 +37,8 @@ export const NewTransaction = () => {
 
   const [validationErrors, setValidationErrors] =
     useState<ValidationErrorsTypes>({} as ValidationErrorsTypes)
+
+  const [loading, setLoading] = useState(false)
 
   const setTransactionData = (
     key: keyof CreateTransactionRequest,
@@ -40,9 +52,14 @@ export const NewTransaction = () => {
 
   const handleCreateTransaction = async () => {
     try {
+      setLoading(true)
+
       await transactionSchema.validate(transaction, {
         abortEarly: false,
       })
+
+      await createTransaction(transaction)
+      closeBottomSheet()
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const errors = {} as ValidationErrorsTypes
@@ -54,7 +71,11 @@ export const NewTransaction = () => {
         })
 
         setValidationErrors(errors)
+      } else {
+        errorHandler(error, 'Falha ao criar transação')
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -115,7 +136,13 @@ export const NewTransaction = () => {
         )}
 
         <View>
-          <AppButton onPress={handleCreateTransaction}>Registrar</AppButton>
+          <AppButton onPress={handleCreateTransaction}>
+            {loading ? (
+              <ActivityIndicator color={colors.white} />
+            ) : (
+              'Registrar'
+            )}
+          </AppButton>
         </View>
       </View>
     </View>
