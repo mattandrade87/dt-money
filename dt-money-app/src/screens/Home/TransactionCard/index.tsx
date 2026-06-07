@@ -1,6 +1,7 @@
 import { colors } from '@/shared/colors'
 import { TransactionTypes } from '@/shared/enums/transactionTypes'
 import { Transaction } from '@/shared/interfaces/transaction'
+import { moneyMapper } from '@/shared/utils/moneyMapper'
 import { MaterialIcons } from '@expo/vector-icons'
 import clsx from 'clsx'
 import { format } from 'date-fns'
@@ -45,7 +46,7 @@ export const TransactionCard: FC<TransactionCardParams> = ({ transaction }) => {
           )}
         >
           {isExpense && '- '}
-          R$ {transaction.value.toFixed(2).replace('.', ',')}
+          R$ {moneyMapper(transaction.value)}
         </Text>
 
         <View className="flex-row w-full justify-between">
