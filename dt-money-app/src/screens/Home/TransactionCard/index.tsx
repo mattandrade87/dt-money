@@ -8,6 +8,7 @@ import { FC } from 'react'
 import { Text, View } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
 
+import { LeftAction } from './LeftAction'
 import { RightAction } from './RightAction'
 
 interface TransactionCardParams {
@@ -29,8 +30,10 @@ export const TransactionCard: FC<TransactionCardParams> = ({ transaction }) => {
       renderRightActions={() => (
         <RightAction transactionId={transaction.id} />
       )}
+      renderLeftActions={() => <LeftAction transaction={transaction} />}
       friction={0.8}
       overshootRight={false}
+      overshootLeft={false}
     >
       <View className="h-[140px] bg-background-tertiary rounded-6 p-6">
         <Text className="text-white text-base">{transaction.description}</Text>
