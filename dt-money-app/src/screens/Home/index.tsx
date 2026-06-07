@@ -1,7 +1,8 @@
 import { useTransactionContext } from '@/context/transaction.context'
+import { colors } from '@/shared/colors'
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
 import { useEffect } from 'react'
-import { FlatList, RefreshControl } from 'react-native'
+import { ActivityIndicator, FlatList, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { EmptyList } from './EmptyList'
@@ -119,6 +120,14 @@ export const Home = () => {
         keyExtractor={(item) => `transaction-${item.id}`}
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={() => (loadings.initial ? null : <EmptyList />)}
+        ListFooterComponent={() =>
+          loadings.loadMore ? (
+            <ActivityIndicator
+              color={colors['accent-brand-light']}
+              size="large"
+            />
+          ) : null
+        }
         refreshControl={
           <RefreshControl
             refreshing={loadings.refresh}
