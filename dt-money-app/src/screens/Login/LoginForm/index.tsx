@@ -1,6 +1,7 @@
 import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
 import { useAuthContext } from '@/context/auth.context'
+import { useSnackbarContext } from '@/context/snackbar.context'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
 import { AppError } from '@/shared/helpers/appError'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,6 +21,7 @@ export const LoginForm = () => {
   const navigation = useNavigation<StackNavigationProp<PublicStackParamsList>>()
 
   const { handleAuthenticate } = useAuthContext()
+  const { notify } = useSnackbarContext()
 
   const {
     control,
@@ -38,7 +40,10 @@ export const LoginForm = () => {
       await handleAuthenticate(userData)
     } catch (error) {
       if (error instanceof AppError) {
-        console.log(error.message)
+        notify({
+          message: error.message,
+          messageType: 'error',
+        })
       }
     }
   }
