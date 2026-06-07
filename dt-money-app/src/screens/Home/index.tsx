@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { FlatList, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { EmptyList } from './EmptyList'
 import { ListHeader } from './ListHeader'
 import { TransactionCard } from './TransactionCard'
 
@@ -117,6 +118,7 @@ export const Home = () => {
         renderItem={({ item }) => <TransactionCard transaction={item} />}
         keyExtractor={(item) => `transaction-${item.id}`}
         ListHeaderComponent={ListHeader}
+        ListEmptyComponent={() => (loadings.initial ? null : <EmptyList />)}
         refreshControl={
           <RefreshControl
             refreshing={loadings.refresh}
