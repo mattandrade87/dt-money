@@ -3,6 +3,7 @@ const { colors } = require('./src/shared/colors')
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
   presets: [require('nativewind/preset')],
+  safelist: ['bg-background-tertiary', 'bg-accent-brand-background-primary'],
   theme: {
     extend: {
       fontFamily: {
@@ -19,6 +20,9 @@ module.exports = {
       },
       height: {
         button: 57,
+      },
+      borderRadius: {
+        6: '6px',
       },
       colors,
     },
