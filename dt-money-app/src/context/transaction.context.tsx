@@ -1,4 +1,7 @@
-import { CreateTransactionRequest } from '@/shared/interfaces/http/createTransactionRequest'
+import {
+  CreateTransactionRequest,
+  UpdateTransactionRequest,
+} from '@/shared/interfaces/http/createTransactionRequest'
 import { TransactionCategory } from '@/shared/interfaces/http/transaction-category-response'
 import { TotalTransactions } from '@/shared/interfaces/total-transactions'
 import { Transaction } from '@/shared/interfaces/transaction'
@@ -16,6 +19,7 @@ type TransactionContextType = {
   fetchCategories: () => Promise<void>
   fetchTransactions: () => Promise<void>
   createTransaction: (transaction: CreateTransactionRequest) => Promise<void>
+  updateTransaction: (transaction: UpdateTransactionRequest) => Promise<void>
   categories: TransactionCategory[]
   transactions: Transaction[]
   totalTransactions: TotalTransactions
@@ -55,6 +59,10 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
     await TransactionService.createTransaction(transaction)
   }
 
+  const updateTransaction = async (transaction: UpdateTransactionRequest) => {
+    await TransactionService.updateTransaction(transaction)
+  }
+
   return (
     <TransactionContext.Provider
       value={{
@@ -64,6 +72,7 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
         fetchCategories,
         fetchTransactions,
         createTransaction,
+        updateTransaction,
       }}
     >
       {children}
