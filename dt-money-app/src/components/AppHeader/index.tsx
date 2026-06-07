@@ -13,7 +13,7 @@ export const AppHeader = () => {
     <View className="w-full flex-row p-8 justify-between bg-background-primary">
       <View>
         <Image
-          source={require('@/assets/logo.png')}
+          source={require('@/assets/dt-money-logo.png')}
           className="w-[130px] h-[30px]"
         />
 

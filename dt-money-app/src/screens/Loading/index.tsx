@@ -31,7 +31,7 @@ export const Loading: FC<LoadingParams> = ({ setLoading }) => {
     <SafeAreaView className="flex-1 bg-background-primary items-center justify-center">
       <>
         <Image
-          source={require('@/assets/logo.png')}
+          source={require('@/assets/dt-money-logo.png')}
           className="h-[48px] w-[255px]"
         />
 
