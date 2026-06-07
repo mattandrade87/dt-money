@@ -2,10 +2,10 @@ import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
 import { useAuthContext } from '@/context/auth.context'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
+import { AppError } from '@/shared/helpers/appError'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { Text, View } from 'react-native'
 
@@ -37,8 +37,8 @@ export const LoginForm = () => {
     try {
       await handleAuthenticate(userData)
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data)
+      if (error instanceof AppError) {
+        console.log(error.message)
       }
     }
   }
