@@ -11,21 +11,25 @@ export const Home = () => {
   const { errorHandler } = useErrorHandler()
 
   const handleFetchCategories = async () => {
+    await fetchCategories()
+  }
+
+  const fetchInitialData = async () => {
     try {
-      await fetchCategories()
+      await Promise.all([handleFetchCategories(), fetchTransactions()])
     } catch (error) {
-      errorHandler(error, 'Falha ao buscar as categorias')
+      errorHandler(error, 'Falha ao buscar dados iniciais')
     }
   }
 
   useEffect(() => {
-    handleFetchCategories()
-    fetchTransactions()
+    fetchInitialData()
   }, [])
 
   return (
-    <SafeAreaView className="flex-1 bg-background-secondary">
+    <SafeAreaView className="flex-1 bg-background-primary">
       <FlatList
+        className="bg-background-secondary"
         data={[]}
         renderItem={() => <></>}
         ListHeaderComponent={ListHeader}
