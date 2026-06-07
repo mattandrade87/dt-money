@@ -13,6 +13,7 @@ export const Home = () => {
     fetchTransactions,
     transactions,
     refreshTransactions,
+    loadMoreTransactions,
     loading,
   } = useTransactionContext()
 
@@ -50,6 +51,8 @@ export const Home = () => {
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={refreshTransactions} />
         }
+        onEndReached={loadMoreTransactions}
+        onEndReachedThreshold={0.5}
       />
     </SafeAreaView>
   )
