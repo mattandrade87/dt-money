@@ -1,59 +1,30 @@
-import { colors } from '@/shared/colors'
+import { useTransactionContext } from '@/context/transaction.context'
 import { TransactionTypes } from '@/shared/enums/transactionTypes'
 import { MaterialIcons } from '@expo/vector-icons'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { FC } from 'react'
 import { Text, View } from 'react-native'
 
-type TransactionCardType = TransactionTypes | 'total'
+import { cardData } from './strategies/cardDataStrategy'
+import { icons } from './strategies/iconStrategy'
+
+export type TransactionCardType = TransactionTypes | 'total'
 
 interface TransactionCardProps {
   type: TransactionCardType
   amount: number
 }
 
-interface IconData {
-  name: keyof typeof MaterialIcons.glyphMap
-  color: string
-}
-
-interface CardData {
-  label: string
-  bgColor: string
-}
-
-const icons: Record<TransactionCardType, IconData> = {
-  [TransactionTypes.revenue]: {
-    name: 'arrow-circle-up',
-    color: colors['accent-brand-light'],
-  },
-  [TransactionTypes.expense]: {
-    name: 'arrow-circle-down',
-    color: colors['accent-red'],
-  },
-  total: {
-    name: 'attach-money',
-    color: colors.white,
-  },
-}
-
-const cardData: Record<TransactionCardType, CardData> = {
-  [TransactionTypes.expense]: {
-    label: 'Saída',
-    bgColor: 'background-tertiary',
-  },
-  [TransactionTypes.revenue]: {
-    label: 'Entrada',
-    bgColor: 'background-tertiary',
-  },
-  total: {
-    label: 'Total',
-    bgColor: 'accent-brand-background-primary',
-  },
-}
-
 export const TransactionCard: FC<TransactionCardProps> = ({ amount, type }) => {
+  const { transactions } = useTransactionContext()
+
   const iconData = icons[type]
   const data = cardData[type]
+
+  const lastTransaction = transactions.find(
+    ({ type: transactionType }) => transactionType.id === type
+  )
 
   return (
     <View
@@ -69,6 +40,20 @@ export const TransactionCard: FC<TransactionCardProps> = ({ amount, type }) => {
         <Text className="text-2xl text-gray-400 font-bold">
           R$ {amount.toFixed(2).replace('.', ',')}
         </Text>
+
+        {type !== 'total' && (
+          <Text className="text-gray-700">
+            {lastTransaction?.createdAt
+              ? format(
+                  lastTransaction.createdAt,
+                  `'Última ${data.label.toLowerCase()} em' d 'de' MMMM`,
+                  {
+                    locale: ptBR,
+                  }
+                )
+              : 'Nenhuma transação encontrada'}
+          </Text>
+        )}
       </View>
     </View>
   )
