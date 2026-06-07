@@ -41,6 +41,7 @@ type TransactionContextType = {
   categories: TransactionCategory[]
   transactions: Transaction[]
   totalTransactions: TotalTransactions
+  pagination: Pagination
   loadings: Loadings
   handleLoadings: (params: HandleLoadingsParams) => void
 }
@@ -158,6 +159,7 @@ export const TransactionContextProvider: FC<PropsWithChildren> = ({
         categories,
         transactions,
         totalTransactions,
+        pagination,
         loadings,
         handleLoadings,
         fetchCategories,
