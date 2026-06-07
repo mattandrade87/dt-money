@@ -1,3 +1,4 @@
+import { TransactionTypeSelector } from '@/components/TransactionTypeSelector'
 import { useBottomSheetContext } from '@/context/bottom-sheet.context'
 import { colors } from '@/shared/colors'
 import { CreateTransactionRequest } from '@/shared/interfaces/http/createTransactionRequest'
@@ -36,7 +37,7 @@ export const NewTransaction = () => {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-1 mt-8 mb-8">
+      <View className="mt-8 mb-8">
         <TextInput
           className="text-white text-lg h-[50px] bg-background-primary my-2 rounded-md pl-4"
           placeholder="Descrição"
@@ -54,6 +55,11 @@ export const NewTransaction = () => {
           precision={2}
           minValue={0}
           onChangeValue={(value) => setTransactionData('value', value ?? 0)}
+        />
+
+        <TransactionTypeSelector
+          typeId={transaction.typeId}
+          setTransactionType={(typeId) => setTransactionData('typeId', typeId)}
         />
       </View>
     </View>
