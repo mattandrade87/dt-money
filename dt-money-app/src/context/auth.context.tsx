@@ -17,7 +17,7 @@ type AuthContextType = {
   token: string | null
   handleAuthenticate: (params: FormLoginParams) => Promise<void>
   handleRegister: (params: FormRegisterParams) => Promise<void>
-  handleLogout: () => void
+  handleLogout: () => Promise<void>
   restoreUserSession: () => Promise<string | null>
 }
 
@@ -57,7 +57,12 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setToken(token)
   }
 
-  const handleLogout = () => {}
+  const handleLogout = async () => {
+    await AsyncStorage.clear()
+
+    setToken(null)
+    setUser(null)
+  }
 
   const restoreUserSession = async () => {
     const userData = await AsyncStorage.getItem('dt-money-user')
