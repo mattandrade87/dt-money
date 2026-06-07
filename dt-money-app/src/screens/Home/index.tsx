@@ -14,38 +14,83 @@ export const Home = () => {
     transactions,
     refreshTransactions,
     loadMoreTransactions,
-    loading,
+    loadings,
+    handleLoadings,
   } = useTransactionContext()
 
   const { errorHandler } = useErrorHandler()
 
   const handleFetchCategories = async () => {
-    await fetchCategories()
+    try {
+      handleLoadings({
+        key: 'initial',
+        value: true,
+      })
+
+      await fetchCategories()
+    } catch (error) {
+      errorHandler(error, 'Falha ao buscar categorias')
+    } finally {
+      handleLoadings({
+        key: 'initial',
+        value: false,
+      })
+    }
   }
 
   const handleFetchInitialTransactions = async () => {
     try {
+      handleLoadings({
+        key: 'initial',
+        value: true,
+      })
+
       await fetchTransactions({
         page: 1,
       })
     } catch (error) {
       errorHandler(error, 'Falha ao buscar transações')
+    } finally {
+      handleLoadings({
+        key: 'initial',
+        value: false,
+      })
     }
   }
 
   const handleLoadMoreTransactions = async () => {
     try {
+      handleLoadings({
+        key: 'loadMore',
+        value: true,
+      })
+
       await loadMoreTransactions()
     } catch (error) {
       errorHandler(error, 'Falha ao carregar novas transações')
+    } finally {
+      handleLoadings({
+        key: 'loadMore',
+        value: false,
+      })
     }
   }
 
   const handleRefreshTransactions = async () => {
     try {
+      handleLoadings({
+        key: 'refresh',
+        value: true,
+      })
+
       await refreshTransactions()
     } catch (error) {
       errorHandler(error, 'Falha ao recarregar as transações')
+    } finally {
+      handleLoadings({
+        key: 'refresh',
+        value: false,
+      })
     }
   }
 
@@ -74,7 +119,7 @@ export const Home = () => {
         ListHeaderComponent={ListHeader}
         refreshControl={
           <RefreshControl
-            refreshing={loading}
+            refreshing={loadings.refresh}
             onRefresh={handleRefreshTransactions}
           />
         }
