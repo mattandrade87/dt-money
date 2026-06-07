@@ -3,7 +3,8 @@ import { colors } from '@/shared/colors'
 import { CreateTransactionRequest } from '@/shared/interfaces/http/createTransactionRequest'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import CurrencyInput from 'react-native-currency-input'
 
 export const NewTransaction = () => {
   const { closeBottomSheet } = useBottomSheetContext()
@@ -15,6 +16,16 @@ export const NewTransaction = () => {
     value: 0,
   })
 
+  const setTransactionData = (
+    key: keyof CreateTransactionRequest,
+    value: string | number
+  ) => {
+    setTransaction((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }))
+  }
+
   return (
     <View className="px-8">
       <View className="w-full flex-row items-center justify-between">
@@ -23,6 +34,27 @@ export const NewTransaction = () => {
         <TouchableOpacity onPress={closeBottomSheet}>
           <MaterialIcons name="close" color={colors.gray[700]} size={20} />
         </TouchableOpacity>
+      </View>
+
+      <View className="flex-1 mt-8 mb-8">
+        <TextInput
+          className="text-white text-lg h-[50px] bg-background-primary my-2 rounded-md pl-4"
+          placeholder="Descrição"
+          placeholderTextColor={colors.gray[700]}
+          value={transaction.description}
+          onChangeText={(text) => setTransactionData('description', text)}
+        />
+
+        <CurrencyInput
+          className="text-white text-lg h-[50px] bg-background-primary my-2 rounded-md pl-4"
+          value={transaction.value}
+          prefix="R$ "
+          delimiter="."
+          separator=","
+          precision={2}
+          minValue={0}
+          onChangeValue={(value) => setTransactionData('value', value ?? 0)}
+        />
       </View>
     </View>
   )
