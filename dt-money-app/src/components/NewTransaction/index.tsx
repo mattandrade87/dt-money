@@ -135,7 +135,7 @@ export const NewTransaction = () => {
           <ErrorMessage>{validationErrors.typeId}</ErrorMessage>
         )}
 
-        <View>
+        <View className="mt-6">
           <AppButton onPress={handleCreateTransaction}>
             {loading ? (
               <ActivityIndicator color={colors.white} />
