@@ -1,0 +1,5 @@
+# Material/roteiro da disciplina (não versionar)
+tarefa*.md
+
+# Backup local do histórico (fora do repositório)
+*.bundle
