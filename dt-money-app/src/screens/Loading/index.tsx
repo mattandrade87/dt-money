@@ -28,11 +28,11 @@ export const Loading: FC<LoadingParams> = ({ setLoading }) => {
   }, [])
 
   return (
-    <SafeAreaView className="flex-1 bg-background-primary items-center justify-center">
+    <SafeAreaView className="flex-1 bg-background-primary items-center justify-start pt-8">
       <>
         <Image
           source={require('@/assets/dt-money-logo.png')}
-          className="h-[48px] w-[255px]"
+          className="h-16 w-16"
         />
 
         <ActivityIndicator color={colors.white} className="mt-20" />
